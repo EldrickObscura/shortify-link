@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raccourcisseur d'URL</title>
+</head>
+<body>
+    <h1>Raccourcisseur d'URL</h1>
+    <form id="urlForm">
+        <label for="url">Entrez l'URL :</label>
+        <input type="text" id="url" name="url" required>
+        <button type="submit">Raccourcir</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("urlForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const url = document.getElementById("url").value;
+
+            // Création de l'objet JSON à envoyer
+            const data = { "url": url };
+
+            // Envoi de la requête POST en JSON
+            fetch("/shorten", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.shortened_url) {
+                    document.getElementById("result").innerHTML = `<p>URL raccourcie : <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a></p>`;
+                } else {
+                    document.getElementById("result").innerHTML = "<p>Erreur lors de la génération du lien.</p>";
+                }
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = "<p>Erreur serveur.</p>";
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
+
