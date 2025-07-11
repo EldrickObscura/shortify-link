@@ -1,0 +1,78 @@
+2025-07-10 13:22:22,133 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-10 13:22:22,133 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-10 13:22:22,133 INFO __main__ Mode debug: False
+2025-07-10 13:22:22,161 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.119:5000
+2025-07-10 13:22:22,163 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-10 13:49:23,483 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-10 13:49:23,485 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-10 13:49:23,491 INFO __main__ Mode debug: False
+2025-07-10 13:49:23,564 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.119:5000
+2025-07-10 13:49:23,566 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-10 13:49:51,474 ERROR werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:51] code 400, message Bad request version ("Þ/UGß1J5\x99/#9'ï\x80\x8f\x83ÖÁæ(")
+2025-07-10 13:49:51,477 INFO werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:51] "[31m[1m\x16\x03\x01\x07O\x01\x00\x07K\x03\x03;º .\x0f(\x1eÞ/UGß1J5\x99/#9'ï\x80\x8f\x83ÖÁæ([0m" 400 -
+2025-07-10 13:49:51,483 ERROR werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:51] code 400, message Bad request version ('AÑy{\x8d}\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À')
+2025-07-10 13:49:51,484 INFO werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:51] "[31m[1m\x16\x03\x01\x02~\x01\x00\x02z\x03\x03ðkaêÊ{&}&TR¾ö9ö%¥WJ·×¦¢4×(6\x90¨\x02\x12ð Jµ\x16\x00ÊEkè\x0eb´rh¡\x97¼a¸\x02¹\x906Ø\x0cã\x0bAÑy{\x8d}\x00"\x13\x01\x13\x03\x13\x02À+À/Ì©Ì¨À,À0À[0m" 400 -
+2025-07-10 13:49:51,572 INFO werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:51] "GET / HTTP/1.1" 200 -
+2025-07-10 13:49:52,353 INFO werkzeug 192.168.1.119 - - [10/Jul/2025 13:49:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-10 13:50:02,191 INFO __main__ URL raccourcie avec succès: https://chatgpt.com/ -> https://tinyurl.com/2zbrfpx2 (service: tinyurl, réduction: -8 chars, -40.0%)
+2025-07-10 13:50:02,197 INFO werkzeug 192.168.1.119 - - [10/Jul/2025 13:50:02] "POST /shorten HTTP/1.1" 200 -
+2025-07-10 14:29:44,794 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-10 14:29:44,794 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-10 14:29:44,795 INFO __main__ Mode debug: False
+2025-07-10 14:29:44,833 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.119:5000
+2025-07-10 14:29:44,834 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-10 14:30:01,648 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:01] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:29,834 WARNING __main__ Service préféré tinyurl échoué: HTTPConnectionPool(host='tinyurl.com', port=80): Max retries exceeded with url: /api-create.php?url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000002123CE10410>, 'Connection to tinyurl.com timed out. (connect timeout=2)'))
+2025-07-10 14:30:41,072 WARNING __main__ Service dagd échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='da.gd', port=443): Max retries exceeded with url: /shorten?url=https%3A%2F%2Fchatgpt.com%2F (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002123CEA7F50>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2025-07-10 14:30:43,882 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:43] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:44,410 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:44] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:45,465 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:45] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:46,198 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:46] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:48,059 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:48] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:48,543 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:30:48] "GET / HTTP/1.1" 200 -
+2025-07-10 14:30:52,319 WARNING __main__ Service isgd échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='is.gd', port=443): Max retries exceeded with url: /create.php?format=simple&url=https%3A%2F%2Fchatgpt.com%2F (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002123CEA7140>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2025-07-10 14:31:03,558 WARNING __main__ Service osdb échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='osdb.link', port=443): Max retries exceeded with url: / (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000002123CED94F0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2025-07-10 14:31:07,604 WARNING __main__ Service tinyurl échoué pour https://chatgpt.com/: HTTPConnectionPool(host='tinyurl.com', port=80): Max retries exceeded with url: /api-create.php?url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000002123CED94C0>, 'Connection to tinyurl.com timed out. (connect timeout=2)'))
+2025-07-10 14:31:07,607 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:31:07] "[35m[1mPOST /shorten HTTP/1.1[0m" 503 -
+2025-07-10 14:31:09,058 WARNING __main__ Service préféré tinyurl échoué: HTTPConnectionPool(host='tinyurl.com', port=80): Max retries exceeded with url: /api-create.php?url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000002123CEDA8A0>, 'Connection to tinyurl.com timed out. (connect timeout=2)'))
+2025-07-10 14:31:23,138 WARNING __main__ Service dagd échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='da.gd', port=443): Max retries exceeded with url: /shorten?url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002123CEDB3E0>, 'Connection to da.gd timed out. (connect timeout=2)'))
+2025-07-10 14:31:29,174 WARNING __main__ Service isgd échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='is.gd', port=443): Max retries exceeded with url: /create.php?format=simple&url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002123C7B2C90>, 'Connection to is.gd timed out. (connect timeout=2)'))
+2025-07-10 14:31:33,230 WARNING __main__ Service osdb échoué pour https://chatgpt.com/: HTTPSConnectionPool(host='osdb.link', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000002123CEDB1A0>, 'Connection to osdb.link timed out. (connect timeout=2)'))
+2025-07-10 14:31:37,255 WARNING __main__ Service tinyurl échoué pour https://chatgpt.com/: HTTPConnectionPool(host='tinyurl.com', port=80): Max retries exceeded with url: /api-create.php?url=https%3A%2F%2Fchatgpt.com%2F (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x000002123CEDA480>, 'Connection to tinyurl.com timed out. (connect timeout=2)'))
+2025-07-10 14:31:37,281 INFO werkzeug 127.0.0.1 - - [10/Jul/2025 14:31:37] "[35m[1mPOST /shorten HTTP/1.1[0m" 503 -
+2025-07-10 14:32:45,915 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-10 14:32:45,916 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-10 14:32:45,916 INFO __main__ Mode debug: False
+2025-07-10 14:32:58,845 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.119:5000
+2025-07-10 14:32:58,847 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-10 14:34:53,865 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-10 14:34:53,866 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-10 14:34:53,866 INFO __main__ Mode debug: False
+2025-07-10 14:34:54,752 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.119:5000
+2025-07-10 14:34:54,754 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-11 02:10:46,358 INFO __main__ Démarrage de Shortify Link v2.0.0
+2025-07-11 02:10:46,358 INFO __main__ Services disponibles: ['tinyurl', 'isgd', 'osdb', 'dagd']
+2025-07-11 02:10:46,359 INFO __main__ Mode debug: False
+2025-07-11 02:10:46,448 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.2.0.2:5000
+2025-07-11 02:10:46,452 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-07-11 02:11:23,210 INFO werkzeug 127.0.0.1 - - [11/Jul/2025 02:11:23] "GET / HTTP/1.1" 200 -
+2025-07-11 02:11:36,209 INFO __main__ URL raccourcie avec succès: https://chatgpt.com/ -> https://tinyurl.com/2zbrfpx2 (service: tinyurl, réduction: -8 chars, -40.0%)
+2025-07-11 02:11:36,210 INFO werkzeug 127.0.0.1 - - [11/Jul/2025 02:11:36] "POST /shorten HTTP/1.1" 200 -

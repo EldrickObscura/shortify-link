@@ -2,50 +2,923 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raccourcisseur d'URL</title>
+    <title>Shortify • Raccourcisseur d'URLs Ultra-Rapide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4ade80;
+            --error: #f87171;
+            --warning: #fbbf24;
+            --dark: #1a1a2e;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --border: rgba(255, 255, 255, 0.18);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--light);
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(45deg, var(--accent), transparent);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 120px; height: 120px; top: 60%; left: 80%; animation-delay: 2s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; top: 80%; left: 20%; animation-delay: 4s; }
+        .shape:nth-child(4) { width: 100px; height: 100px; top: 30%; left: 70%; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--light), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(240, 147, 251, 0.3)); }
+            to { filter: drop-shadow(0 0 40px rgba(240, 147, 251, 0.6)); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Shortener Card */
+        .shortener-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .shortener-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
+        }
+
+        /* Form */
+        .url-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .url-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .url-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .service-select {
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .service-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .service-select option {
+            background: var(--dark);
+            color: var(--light);
+        }
+
+        .shorten-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            border: none;
+            border-radius: 15px;
+            color: var(--light);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 140px;
+        }
+
+        .shorten-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        .shorten-btn:active {
+            transform: translateY(0);
+        }
+
+        .shorten-btn.loading {
+            pointer-events: none;
+        }
+
+        .btn-spinner {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+        }
+
+        .result-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .result-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .result-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--success), #22c55e);
+            border: none;
+            border-radius: 10px;
+            color: var(--light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        /* Stats */
+        .stats-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* History */
+        .history-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .history-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .clear-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(248, 113, 113, 0.2);
+            border: 1px solid var(--error);
+            border-radius: 8px;
+            color: var(--error);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: var(--error);
+            color: var(--light);
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .history-links {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .history-original {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.25rem;
+            word-break: break-all;
+        }
+
+        .history-short {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            word-break: break-all;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .action-copy {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .action-copy:hover {
+            background: var(--success);
+            color: var(--light);
+        }
+
+        .action-delete {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .action-delete:hover {
+            background: var(--error);
+            color: var(--light);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transform: translateX(400px);
+            transition: all 0.4s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--error);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem 1.5rem;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .shortener-card {
+                padding: 1.5rem;
+            }
+
+            .url-form {
+                flex-direction: column;
+            }
+
+            .url-input {
+                min-width: unset;
+            }
+
+            .result-item,
+            .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .result-info,
+            .history-links {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .copy-btn,
+            .history-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
 </head>
 <body>
-    <h1>Raccourcisseur d'URL</h1>
-    <form id="urlForm">
-        <label for="url">Entrez l'URL :</label>
-        <input type="text" id="url" name="url" required>
-        <button type="submit">Raccourcir</button>
-    </form>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
 
-    <div id="result"></div>
+    <!-- Header -->
+    <div class="header">
+        <h1 class="logo">Shortify</h1>
+        <p class="subtitle">Raccourcisseur d'URLs Ultra-Rapide</p>
+        <p class="description">Transformez vos liens longs en URLs courtes, élégantes et faciles à partager en quelques secondes</p>
+    </div>
+
+    <div class="container">
+        <!-- URL Shortener -->
+        <div class="shortener-card">
+            <form class="url-form" id="shortenForm">
+                <input 
+                    type="url" 
+                    class="url-input" 
+                    id="urlInput"
+                    placeholder="Collez votre URL ici... (ex: https://example.com/very/long/url)"
+                    required
+                >
+                <select class="service-select" id="serviceSelect">
+                    <option value="tinyurl">TinyURL</option>
+                    <option value="isgd">Is.gd</option>
+                    <option value="osdb">OSDB</option>
+                    <option value="dagd">Da.gd</option>
+                </select>
+                <button type="submit" class="shorten-btn" id="shortenBtn">
+                    <i class="fas fa-compress-alt"></i>
+                    <span class="btn-text">Raccourcir</span>
+                    <i class="fas fa-spinner btn-spinner"></i>
+                </button>
+            </form>
+
+            <div class="result-card" id="resultCard">
+                <div class="result-item">
+                    <div class="result-info">
+                        <div class="result-label">URL Originale</div>
+                        <div class="result-value" id="originalUrl"></div>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-info">
+                        <div class="result-label">URL Raccourcie</div>
+                        <div class="result-value" id="shortUrl"></div>
+                    </div>
+                    <button class="copy-btn" id="copyBtn">
+                        <i class="fas fa-copy"></i>
+                        <span>Copier</span>
+                    </button>
+                </div>
+                <div class="result-item">
+                    <div class="result-info">
+                        <div class="result-label">Service Utilisé</div>
+                        <div class="result-value" id="serviceUsed"></div>
+                    </div>
+                    <button class="copy-btn" onclick="shareUrl()" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Partager</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-card">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem;">📊 Statistiques</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalLinks">0</div>
+                    <div class="stat-label">Liens Raccourcis</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalSaved">0</div>
+                    <div class="stat-label">Caractères Économisés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="avgReduction">0%</div>
+                    <div class="stat-label">Réduction Moyenne</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="favoriteService">-</div>
+                    <div class="stat-label">Service Préféré</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="history-card">
+            <div class="history-header">
+                <h2 class="history-title">📝 Historique des Liens</h2>
+                <button class="clear-btn" onclick="clearHistory()">
+                    <i class="fas fa-trash"></i> Vider
+                </button>
+            </div>
+            <div id="historyList">
+                <div style="text-align: center; padding: 2rem; opacity: 0.6;">
+                    <i class="fas fa-link" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                    Aucun lien raccourci pour le moment.<br>
+                    Commencez par raccourcir votre premier lien !
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        document.getElementById("urlForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            const url = document.getElementById("url").value;
+        // État de l'application
+        let linkHistory = JSON.parse(localStorage.getItem('linkHistory') || '[]');
+        let stats = JSON.parse(localStorage.getItem('linkStats') || '{"total": 0, "saved": 0, "services": {}}');
 
-            // Création de l'objet JSON à envoyer
-            const data = { "url": url };
-
-            // Envoi de la requête POST en JSON
-            fetch("/shorten", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.shortened_url) {
-                    document.getElementById("result").innerHTML = `<p>URL raccourcie : <a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a></p>`;
-                } else {
-                    document.getElementById("result").innerHTML = "<p>Erreur lors de la génération du lien.</p>";
-                }
-            })
-            .catch(error => {
-                document.getElementById("result").innerHTML = "<p>Erreur serveur.</p>";
-                console.error("Error:", error);
-            });
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            updateHistory();
+            
+            // Focus automatique sur l'input
+            document.getElementById('urlInput').focus();
         });
+
+        // Gestion du formulaire
+        document.getElementById('shortenForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const urlInput = document.getElementById('urlInput');
+            const serviceSelect = document.getElementById('serviceSelect');
+            const shortenBtn = document.getElementById('shortenBtn');
+            const resultCard = document.getElementById('resultCard');
+            
+            const url = urlInput.value.trim();
+            const service = serviceSelect.value;
+            
+            if (!url) {
+                showToast('Veuillez entrer une URL', 'error');
+                return;
+            }
+            
+            // Animation de chargement
+            shortenBtn.classList.add('loading');
+            shortenBtn.querySelector('.btn-text').style.display = 'none';
+            shortenBtn.querySelector('.btn-spinner').style.display = 'inline-block';
+            
+            try {
+                const response = await fetch('/shorten', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url, service: service })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Affichage du résultat
+                    document.getElementById('originalUrl').textContent = data.original_url;
+                    document.getElementById('shortUrl').textContent = data.shortened_url;
+                    document.getElementById('serviceUsed').textContent = data.service.toUpperCase();
+                    
+                    resultCard.classList.add('show');
+                    
+                    // Sauvegarde dans l'historique
+                    const linkData = {
+                        id: Date.now(),
+                        original: data.original_url,
+                        short: data.shortened_url,
+                        service: data.service,
+                        date: new Date().toISOString(),
+                        clicks: 0
+                    };
+                    
+                    linkHistory.unshift(linkData);
+                    if (linkHistory.length > 50) linkHistory.pop(); // Limite à 50 liens
+                    
+                    // Mise à jour des statistiques
+                    stats.total++;
+                    stats.saved += data.original_url.length - data.shortened_url.length;
+                    stats.services[data.service] = (stats.services[data.service] || 0) + 1;
+                    
+                    saveData();
+                    updateStats();
+                    updateHistory();
+                    
+                    // Vider le champ
+                    urlInput.value = '';
+                    
+                    showToast('URL raccourcie avec succès !', 'success');
+                    
+                } else {
+                    showToast(data.error || 'Erreur lors du raccourcissement', 'error');
+                }
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                showToast('Erreur de connexion. Veuillez réessayer.', 'error');
+            }
+            
+            // Fin du chargement
+            shortenBtn.classList.remove('loading');
+            shortenBtn.querySelector('.btn-text').style.display = 'inline';
+            shortenBtn.querySelector('.btn-spinner').style.display = 'none';
+        });
+
+        // Copie du lien
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const shortUrl = document.getElementById('shortUrl').textContent;
+            copyToClipboard(shortUrl, this);
+        });
+
+        // Fonction de copie
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                const originalContent = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> <span>Copié !</span>';
+                button.classList.add('copied');
+                
+                setTimeout(function() {
+                    button.innerHTML = originalContent;
+                    button.classList.remove('copied');
+                }, 2000);
+                
+                showToast('Lien copié dans le presse-papiers !', 'success');
+            });
+        }
+
+        // Partage du lien
+        function shareUrl() {
+            const shortUrl = document.getElementById('shortUrl').textContent;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Lien Raccourci - Shortify',
+                    url: shortUrl
+                });
+            } else {
+                copyToClipboard(shortUrl, event.target);
+            }
+        }
+
+        // Mise à jour des statistiques
+        function updateStats() {
+            document.getElementById('totalLinks').textContent = stats.total;
+            document.getElementById('totalSaved').textContent = formatNumber(stats.saved);
+            
+            const avgReduction = stats.total > 0 ? Math.round((stats.saved / stats.total) * 100 / 20) : 0;
+            document.getElementById('avgReduction').textContent = avgReduction + '%';
+            
+            const favoriteService = Object.keys(stats.services).reduce((a, b) => 
+                stats.services[a] > stats.services[b] ? a : b, '-'
+            );
+            document.getElementById('favoriteService').textContent = favoriteService.toUpperCase();
+        }
+
+        // Mise à jour de l'historique
+        function updateHistory() {
+            const historyList = document.getElementById('historyList');
+            
+            if (linkHistory.length === 0) {
+                historyList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; opacity: 0.6;">
+                        <i class="fas fa-link" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                        Aucun lien raccourci pour le moment.<br>
+                        Commencez par raccourcir votre premier lien !
+                    </div>
+                `;
+                return;
+            }
+            
+            historyList.innerHTML = linkHistory.map(link => `
+                <div class="history-item">
+                    <div class="history-links">
+                        <div class="history-original">${truncateUrl(link.original, 60)}</div>
+                        <div class="history-short">${link.short}</div>
+                    </div>
+                    <div class="history-actions">
+                        <button class="action-btn action-copy" onclick="copyToClipboard('${link.short}', this)" title="Copier">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="action-btn action-delete" onclick="deleteLink(${link.id})" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Suppression d'un lien
+        function deleteLink(id) {
+            linkHistory = linkHistory.filter(link => link.id !== id);
+            saveData();
+            updateHistory();
+            showToast('Lien supprimé', 'success');
+        }
+
+        // Vider l'historique
+        function clearHistory() {
+            if (confirm('Êtes-vous sûr de vouloir vider tout l\'historique ?')) {
+                linkHistory = [];
+                stats = { total: 0, saved: 0, services: {} };
+                saveData();
+                updateStats();
+                updateHistory();
+                showToast('Historique vidé', 'success');
+            }
+        }
+
+        // Sauvegarde des données
+        function saveData() {
+            localStorage.setItem('linkHistory', JSON.stringify(linkHistory));
+            localStorage.setItem('linkStats', JSON.stringify(stats));
+        }
+
+        // Fonctions utilitaires
+        function truncateUrl(url, maxLength) {
+            return url.length > maxLength ? url.substring(0, maxLength) + '...' : url;
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 400);
+            }, 3000);
+        }
+
+        // Raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                document.getElementById('shortenForm').dispatchEvent(new Event('submit'));
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('resultCard').classList.remove('show');
+            }
+        });
+
+        // Auto-resize pour mobile
+        function handleResize() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
     </script>
 </body>
 </html>
-
